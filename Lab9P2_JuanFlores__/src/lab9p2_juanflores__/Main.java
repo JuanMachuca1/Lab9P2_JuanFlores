@@ -17,6 +17,7 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        
     }
 
     /**
@@ -673,6 +674,7 @@ public class Main extends javax.swing.JFrame {
         Dba dbaa = new Dba("./Lab9P2.accdb");
         dbaa.conectar();
         
+        
         try {
             String OrderID =txt_orderID3.getText();
              String OrderDate = txt_orderDate3.getText();
@@ -680,7 +682,7 @@ public class Main extends javax.swing.JFrame {
             
             String ShipMode = txt_shipMode3.getText();
             String CustomerID = txt_customerID3.getText();
-            String Customer = txt_customerName3.getText();
+            String CustomerName = txt_customerName3.getText();
             
             String Segment = txt_segment3.getText();
             String Country = txt_country3.getText();
@@ -701,21 +703,19 @@ public class Main extends javax.swing.JFrame {
             String Discount = txt_Discount3.getText();
             String Profile = txt_profile3.getText();
            
-            dbaa.query.execute("INSERT INTO TenRecord " +
-                   "(Order ID,Order Date,Ship Date,Ship Mode,Customer ID,Customer Name,Segment," +
-                   "Country,City,State,Postal Code,Region,Product ID,Category,Sub-Category,Product Name," +
-                   "Sales,Quantity,Discount,Profit)" +
+            dbaa.query.execute("INSERT INTO TenRecord " 
+                 +  "([Order ID], [Order Date], [Ship Date], [Ship Mode], [Customer ID], [Customer Name], [Segment], " 
+                 +  "[Country], [City], [State], [Postal Code], [Region], [Product ID], [Category], [Sub-Category], [Product Name], " 
+                 +  "[Sales], [Quantity], [Discount], [Profit])" +
                    "VALUES ('" + OrderID + "','" + OrderDate + "','" + ShipDate + "','" + ShipMode + "','" + 
-                   CustomerID + "','" + Customer + "','" + Segment + "','" + Country + "','" + City + "','" + 
+                   CustomerID + "','" + CustomerName + "','" + Segment + "','" + Country + "','" + City + "','" + 
                    State + "','" + PostalCode + "','" + Region + "','" + ProductID + "','" + category + "','" + 
                    SubCategory + "','" + productName + "','" + Sales + "','" + Quantity + "','" + Discount + "','" + 
                    Profile + "')");
+
             
-            dbaa.commit();
-            
-                 
-              
-                                           
+            dbaa.commit();             
+                                    
 
         } catch (SQLException e) {
                 e.printStackTrace();
