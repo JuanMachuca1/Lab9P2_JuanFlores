@@ -848,13 +848,15 @@ public class Main extends javax.swing.JFrame {
 
     private void btn_eliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_eliminarMouseClicked
       
-       
+       ClaseHilo yo = new ClaseHilo(Color.yellow, 6, barraCarga);
+        Thread proceso1 = new Thread(yo);
+        proceso1.start();
         
         Dba dba = new Dba("./Lab9P2.accdb");
         
         dba.conectar(); 
         
-        
+        s
        
         
         try {
@@ -873,9 +875,7 @@ public class Main extends javax.swing.JFrame {
             e.printStackTrace();
         }
         
-        ClaseHilo yo = new ClaseHilo(Color.yellow, 6, barraCarga);
-        Thread proceso1 = new Thread(yo);
-        proceso1.start();
+        
         
         
         
