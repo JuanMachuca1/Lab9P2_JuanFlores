@@ -6,6 +6,8 @@ package lab9p2_juanflores__;
  
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author JD
@@ -87,6 +89,10 @@ public class Main extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         textoDatos = new javax.swing.JTextArea();
         jPanel11 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        lista__ = new javax.swing.JTable();
+        btn_subirtabla = new javax.swing.JButton();
+        btn_eliminar = new javax.swing.JButton();
         jProgressBar1 = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -490,15 +496,51 @@ public class Main extends javax.swing.JFrame {
 
         jTabbedPane4.addTab("Listar Registros", jPanel10);
 
+        lista__.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Row ID", "Order ID", "OrderDate", "Customer ID", "Country", "City", "Product ID", "Sales"
+            }
+        ));
+        jScrollPane2.setViewportView(lista__);
+
+        btn_subirtabla.setText("Update Tabla");
+        btn_subirtabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_subirtablaMouseClicked(evt);
+            }
+        });
+
+        btn_eliminar.setText("Eliminar Registro");
+
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 884, Short.MAX_VALUE)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addComponent(btn_subirtabla, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 831, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 469, Short.MAX_VALUE)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_subirtabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(btn_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         jTabbedPane4.addTab("Eliminar Registros", jPanel11);
@@ -551,7 +593,7 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_agregarRegistro3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarRegistro3ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btn_agregarRegistro3ActionPerformed
 
     private void listOrdersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listOrdersMouseClicked
@@ -563,20 +605,24 @@ public class Main extends javax.swing.JFrame {
 "FROM TenRecord;");
             
             ResultSet rs = db.query.getResultSet();
-            
+          String texto = "";
+            int o = 1;
             while(rs.next()){
-                String texto = 
-                        "OrderID:  "+rs.getString(1)+"\n"+
-                                "OrderDate:  "+rs.getString(2)+"\n"+
-                                        "ShipDate:  "+rs.getString(3)+"\n"+
-                                                "ShipMode:  "+rs.getString(4)+"\n"+
-                                                        "CustomerID:  "+rs.getString(5);
-                textoDatos.setText(texto);
+              texto+= "Record "+o+"\n";
+              texto+=  "Order ID : "+rs.getString(1)+"\n";
+              texto+=  "Order Date: "+rs.getString(2)+"\n";
+              texto+=  "Ship Date: "+rs.getString(3)+"\n";
+              texto+=  "Ship Mode: "+rs.getString(4)+"\n";
+              texto+=  "Customer ID: "+rs.getString(5)+"\n";
+             
+              texto+= "\n";
+                                                                     
+               o++;
             }
-            
-            
+            textoDatos.setText(texto);
             
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al listar");
             e.printStackTrace();
         }
         db.desconectar();
@@ -591,24 +637,28 @@ public class Main extends javax.swing.JFrame {
         db.conectar();
         try {
             db.query.execute("SELECT [Order ID], [Product ID], [Sales], [Quantity], [Discount], [Profit]\n" +
-"FROM TenRecord;");
+"FROM TenRecord");
             
             ResultSet rs = db.query.getResultSet();
-            
+         String texto = "";
+            int o = 1;
             while(rs.next()){
-                String texto = 
-                        "OrderID:  "+rs.getString(1)+"\n"+
-                                "ProductID:  "+rs.getString(2)+"\n"+
-                                        "Sales:  "+rs.getString(3)+"\n"+
-                                                "Quantity:  "+rs.getString(4)+"\n"+
-                                                        "Discount:  "+rs.getString(4)+"\n"+
-                                                            "Profit:  "+rs.getString(5);
-                textoDatos.setText(texto);
+              texto+= "Record "+o+"\n";
+              texto+=  "Order ID : "+rs.getString(1)+"\n";
+              texto+=  "Product ID: "+rs.getString(2)+"\n";
+              texto+=  "Sales: "+rs.getString(3)+"\n";
+              texto+=  "Quantity: "+rs.getString(4)+"\n";
+              texto+=  "Discount: "+rs.getString(5)+"\n";
+              texto+=  "Profit: "+rs.getString(6)+"\n";
+             
+              texto+= "\n";
+                                                                     
+               o++;
             }
-            
-            
+            textoDatos.setText(texto);
             
         } catch (SQLException e) {
+             JOptionPane.showMessageDialog(this, "Error al listar");
             e.printStackTrace();
         }
         db.desconectar();
@@ -619,25 +669,28 @@ public class Main extends javax.swing.JFrame {
         db.conectar();
         try {
             db.query.execute("SELECT [Customer ID], [Customer Name], [Segment], [Country], [City], [State],[Postal Code],[Region]\n" +
-"FROM TenRecord;");
+"FROM TenRecor");
             
             ResultSet rs = db.query.getResultSet();
-            
+           String texto = "";
+            int o = 1;
             while(rs.next()){
-                String texto = 
-                        "Customer ID :  "+rs.getString(1)+"\n"+
-                                "Customer ID :  "+rs.getString(2)+"\n"+
-                                        "Segment :  "+rs.getString(3)+"\n"+
-                                                "Country:  "+rs.getString(4)+"\n"+
-                                                        "State :  "+rs.getString(4)+"\n"+
-                                                              "Postal :  "+rs.getString(4)+"\n"+
-                                                                    "Region:  "+rs.getString(5);
-                textoDatos.setText(texto);
+              texto+= "Record "+o+"\n";
+              texto+=  "Customer ID : "+rs.getString(1)+"\n";
+              texto+=  "Customer Name: "+rs.getString(2)+"\n";
+              texto+=  "Segment: "+rs.getString(3)+"\n";
+              texto+=  "Country: "+rs.getString(4)+"\n";
+              texto+=  "City: "+rs.getString(5)+"\n";
+              texto+=  "State: "+rs.getString(6)+"\n";
+              texto+=  "Postal Code: "+rs.getString(7)+"\n";
+              texto+=  "Region: "+rs.getString(8)+"\n";
+              texto+= "\n";
+                                                                     
+               o++;
             }
-            
-            
-            
+            textoDatos.setText(texto);
         } catch (SQLException e) {
+             JOptionPane.showMessageDialog(this, "Error al listar");
             e.printStackTrace();
         }
         db.desconectar();
@@ -648,23 +701,26 @@ public class Main extends javax.swing.JFrame {
         db.conectar();
         try {
             db.query.execute("SELECT [Product ID], [Category], [Sub-Category], [Product Name]\n" +
-"FROM TenRecord;");
+"FROM TenRecord");
             
             ResultSet rs = db.query.getResultSet();
-            
+            String texto = "";
+            int o = 1;
             while(rs.next()){
-                String texto = 
-                        "Product ID :  "+rs.getString(1)+"\n"+
-                                "Category :  "+rs.getString(2)+"\n"+
-                                        "Sub-Category :  "+rs.getString(3)+"\n"+
-                                                "Product Name:  "+rs.getString(4);
-                                                        
-                textoDatos.setText(texto);
+              texto+= "Record "+o+"\n";
+              texto+=  "Product ID: "+rs.getString(1)+"\n";
+              texto+=  "Category: "+rs.getString(2)+"\n";
+              texto+=  "Sub-Category: "+rs.getString(3)+"\n";
+              texto+=  "Product Name: "+rs.getString(4)+"\n";
+              texto+= "\n";
+                                                                     
+               o++;
             }
             
-            
+            textoDatos.setText(texto);
             
         } catch (SQLException e) {
+             JOptionPane.showMessageDialog(this, "Error al listar");
             e.printStackTrace();
         }
         db.desconectar();
@@ -703,21 +759,16 @@ public class Main extends javax.swing.JFrame {
             String Discount = txt_Discount3.getText();
             String Profile = txt_profile3.getText();
            
-            dbaa.query.execute("INSERT INTO TenRecord " 
-                 +  "([Order ID], [Order Date], [Ship Date], [Ship Mode], [Customer ID], [Customer Name], [Segment], " 
-                 +  "[Country], [City], [State], [Postal Code], [Region], [Product ID], [Category], [Sub-Category], [Product Name], " 
-                 +  "[Sales], [Quantity], [Discount], [Profit])" +
-                   "VALUES ('" + OrderID + "','" + OrderDate + "','" + ShipDate + "','" + ShipMode + "','" + 
-                   CustomerID + "','" + CustomerName + "','" + Segment + "','" + Country + "','" + City + "','" + 
-                   State + "','" + PostalCode + "','" + Region + "','" + ProductID + "','" + category + "','" + 
-                   SubCategory + "','" + productName + "','" + Sales + "','" + Quantity + "','" + Discount + "','" + 
-                   Profile + "')");
+          dbaa.query.execute("INSERT INTO TenRecord"
+                    + " ([Order ID], [Order Date], [Ship Date], [Ship Mode], [Customer ID], [Customer Name], [Segment], [Country], [City], [State], [Postal Code], [Region], [Product ID], [Category], [Sub-Category], [Product Name], [Sales], [Quantity], [Discount], [Profit])"
+                    + " VALUES ('" + OrderID + "', '" + OrderDate +"', '"+ ShipDate +"', '"+ ShipMode+"', '"+ CustomerID+"', '"+ CustomerName+"', '"+ Segment +"', '"+ Country +"', '"+ City +"', '"+ State +"', '"+ PostalCode +"', '"+ Region +"', '"+ ProductID +"', '"+ category +"', '"+ SubCategory +"', '"+ productName+"', '"+ Sales +"', '"+ Quantity +"', '"+ Discount +"', '"+ Profile +"');");
 
             
             dbaa.commit();             
                                     
 
         } catch (SQLException e) {
+             JOptionPane.showMessageDialog(this, "Error al agregar");
                 e.printStackTrace();
         }
         
@@ -750,9 +801,44 @@ public class Main extends javax.swing.JFrame {
     txt_Discount3.setText("");
     txt_profile3.setText("");
     
-    
+        JOptionPane.showMessageDialog(this, "registro agregado");
         
     }//GEN-LAST:event_btn_agregarRegistro3MouseClicked
+
+    private void btn_subirtablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_subirtablaMouseClicked
+       
+        
+        Dba db = new Dba("./Lab9P2.accdb");
+        
+        db.conectar();
+        
+        try {
+               db.query.execute("SELECT [RowID], [Order ID], [Order Date], [Customer ID],[Country],[City],[Product ID],[Sales]\n" +
+               "FROM TenRecord");
+            
+            ResultSet rs = db.query.getResultSet();
+           
+            while(rs.next()){
+             
+             DefaultTableModel modelo = (DefaultTableModel) lista__.getModel();
+              
+             
+              Object[] array = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8)};
+         
+              modelo.addRow(array);
+            
+              lista__.setModel(modelo);
+            }
+            
+                 
+              
+        } catch (SQLException e) {
+             JOptionPane.showMessageDialog(this, "Error al subir la tabla");
+            e.printStackTrace();
+        }
+        
+        db.desconectar();
+    }//GEN-LAST:event_btn_subirtablaMouseClicked
 
     /**
      * @param args the command line arguments
@@ -792,7 +878,9 @@ public class Main extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_agregarRegistro3;
+    private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_limpiar;
+    private javax.swing.JButton btn_subirtabla;
     private javax.swing.JLabel jLabel61;
     private javax.swing.JLabel jLabel62;
     private javax.swing.JLabel jLabel63;
@@ -824,11 +912,13 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane4;
     private javax.swing.JPanel listCustomers;
     private javax.swing.JPanel listDetails;
     private javax.swing.JPanel listOrders;
     private javax.swing.JPanel listProducts;
+    private javax.swing.JTable lista__;
     private javax.swing.JTextArea textoDatos;
     private javax.swing.JTextField txt_Discount3;
     private javax.swing.JTextField txt_ProductName3;
