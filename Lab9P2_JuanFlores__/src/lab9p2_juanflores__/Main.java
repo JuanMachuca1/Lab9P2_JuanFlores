@@ -4,6 +4,7 @@
  */
 package lab9p2_juanflores__;
  
+import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -93,7 +94,7 @@ public class Main extends javax.swing.JFrame {
         lista__ = new javax.swing.JTable();
         btn_subirtabla = new javax.swing.JButton();
         btn_eliminar = new javax.swing.JButton();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        barraCarga = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -557,14 +558,14 @@ public class Main extends javax.swing.JFrame {
             .addComponent(jTabbedPane4)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 854, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(barraCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 854, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap(15, Short.MAX_VALUE)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(barraCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -854,9 +855,11 @@ public class Main extends javax.swing.JFrame {
         dba.conectar(); 
         
         
-        int id =lista__.getSelectedRow();
+       
         
         try {
+           int id =lista__.getSelectedRow();
+           
            DefaultTableModel modelo = (DefaultTableModel) lista__.getModel();
              dba.query.execute("delete from TenRecord where RowID = "+id+"");
             
@@ -869,6 +872,11 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al eliminar el registro");
             e.printStackTrace();
         }
+        
+        ClaseHilo yo = new ClaseHilo(Color.yellow, 6, barraCarga);
+        Thread proceso1 = new Thread(yo);
+        proceso1.start();
+        
         
         
         dba.desconectar();
@@ -917,6 +925,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JProgressBar barraCarga;
     private javax.swing.JButton btn_agregarRegistro3;
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_limpiar;
@@ -950,7 +959,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane4;
