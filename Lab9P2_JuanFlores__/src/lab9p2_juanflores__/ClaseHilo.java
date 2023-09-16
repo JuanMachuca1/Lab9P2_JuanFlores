@@ -4,10 +4,7 @@
  */
 package lab9p2_juanflores__;
 
-/**
- *
- * @author JD
- */
-public class ClaseHilo {
+
+public class ClaseHilo extends Thread{
     
 }

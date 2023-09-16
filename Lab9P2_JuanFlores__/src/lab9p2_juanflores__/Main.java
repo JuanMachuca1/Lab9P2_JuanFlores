@@ -498,7 +498,7 @@ public class Main extends javax.swing.JFrame {
 
         lista__.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Row ID", "Order ID", "OrderDate", "Customer ID", "Country", "City", "Product ID", "Sales"
@@ -514,6 +514,11 @@ public class Main extends javax.swing.JFrame {
         });
 
         btn_eliminar.setText("Eliminar Registro");
+        btn_eliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_eliminarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -552,7 +557,7 @@ public class Main extends javax.swing.JFrame {
             .addComponent(jTabbedPane4)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 842, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 854, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
@@ -669,7 +674,7 @@ public class Main extends javax.swing.JFrame {
         db.conectar();
         try {
             db.query.execute("SELECT [Customer ID], [Customer Name], [Segment], [Country], [City], [State],[Postal Code],[Region]\n" +
-"FROM TenRecor");
+"FROM TenRecord");
             
             ResultSet rs = db.query.getResultSet();
            String texto = "";
@@ -839,6 +844,41 @@ public class Main extends javax.swing.JFrame {
         
         db.desconectar();
     }//GEN-LAST:event_btn_subirtablaMouseClicked
+
+    private void btn_eliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_eliminarMouseClicked
+      
+       
+        
+        Dba dba = new Dba("./Lab9P2.accdb");
+        
+        dba.conectar(); 
+        
+        
+        int id =lista__.getSelectedRow();
+        
+        try {
+           DefaultTableModel modelo = (DefaultTableModel) lista__.getModel();
+             dba.query.execute("delete from TenRecord where RowID = "+id+"");
+            
+           dba.commit();
+           
+         modelo.removeRow(id);
+            
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al eliminar el registro");
+            e.printStackTrace();
+        }
+        
+        
+        dba.desconectar();
+        
+        
+
+        
+        
+        
+    }//GEN-LAST:event_btn_eliminarMouseClicked
 
     /**
      * @param args the command line arguments
